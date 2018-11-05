@@ -9,6 +9,7 @@ import numpy as np
 
 from typing import Tuple
 
+
 def find_non_unique_ids(ids: np.array) -> Tuple[np.array]:
     """
     Takes the ID array ids, and returns two new arrays.
@@ -39,3 +40,38 @@ def find_non_unique_ids(ids: np.array) -> Tuple[np.array]:
 
     return duplicate_ids, duplicate_positions
 
+
+def generate_new_ids(ids: np.array, n_required: int) -> np.array:
+    """
+    Generates the new IDs. Assumes that all ids are contained in the
+    original ids array.
+    """
+
+    current_max_id = ids.max()
+    new_ids = np.arange(n_required) + current_max_id + 1
+
+    return new_ids
+
+
+def find_and_replace_non_unique_ids(ids: np.array) -> Tuple[np.array, dict]:
+    """
+    Finds and replacs the non-unique ids in the ids array.
+    
+    Returns:
+
+    + The new ID array, and
+    For the IDs that have changed:
+    + A dictionary with {position_in_array: old ID}
+    + A dictionary with {position_in_array: new ID}
+    """
+
+    duplicate_ids, duplicate_positions = find_non_unique_ids(ids)
+    replacement_ids = generate_new_ids(ids, n_required=len(duplicate_ids))
+
+    new_ids = ids
+    new_ids[duplicate_positions] = replacement_ids
+
+    old_position_dict = {k: v for k, v in zip(duplicate_positions, duplicate_ids)}
+    new_position_dict = {k: v for k, v in zip(duplicate_positions, replacement_ids)}
+
+    return new_ids, old_position_dict, new_position_dict

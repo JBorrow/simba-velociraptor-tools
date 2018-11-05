@@ -4,6 +4,7 @@ Tests the functions in preprocess.py
 
 from preprocess import *
 
+
 def test_find_non_unique_ids_0():
     """
     Tests the null case, i.e. no repeated ids.
@@ -16,6 +17,7 @@ def test_find_non_unique_ids_0():
     assert positions.shape == (0,)
 
     return
+
 
 def test_find_non_unique_ids_1():
     """
@@ -55,5 +57,38 @@ def test_find_non_unique_ids_3():
 
     assert (repeated == np.array([5, 2, 7])).all()
     assert (positions == np.array([5, 7, 9])).all()
+
+    return
+
+
+def test_generate_new_ids_0():
+    """
+    Tests the generation of new IDs.
+    """
+    data = np.arange(10)
+    n_required = 10
+    expected_output = np.arange(10, 20, 1)
+
+    assert (expected_output == generate_new_ids(data, n_required)).all()
+
+    return
+
+
+def test_find_and_replace_0():
+    """
+    Tests a more realistic case.
+    """
+    data = np.array([7, 5, 3, 2, 4, 5, 6, 2, 1, 7])
+
+    new_ids, oldpos, newpos = find_and_replace_non_unique_ids(data)
+
+    expected_new_ids = np.array([7, 5, 3, 2, 4, 8, 6, 9, 1, 10])
+
+    expected_oldpos = {5: 5, 7: 2, 9: 7}
+    expected_newpos = {5: 8, 7: 9, 9: 10}
+
+    assert (new_ids == expected_new_ids).all()
+    assert expected_oldpos == oldpos
+    assert expected_newpos == newpos
 
     return
