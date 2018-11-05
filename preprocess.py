@@ -187,3 +187,37 @@ def load_hdf5_replace_and_dump(filename: str, output_filename_extra="duplicated"
 if __name__ == "__main__":
     # Run in script mode!
     import argparse as ap
+
+    PARSER = ap.ArgumentParser(
+        description="""
+        Preprocessor for halo finding on SIMBA data. SIMBA does not require unique IDs,
+        and this can cause some trouble with halo finders (and other postprocessing
+        tools). This python script goes through and replaces non-unique IDs in the given
+        HDF5 output file, saving the diffs to file.
+        """
+    )
+
+    PARSER.add_argument(
+        "-i",
+        "--input",
+        help="""
+        Input HDF5 file to preprocess.
+        """,
+        required=True,
+    )
+
+    PARSER.add_argument(
+        "-o",
+        "--output",
+        help="""
+        Extra string to add onto the output filename for the diffs.
+        """,
+        required=False,
+        default="duplicated",
+    )
+
+    ARGS = vars(PARSER.parse_args())
+
+    load_hdf5_replace_and_dump(
+        filename=ARGS["input"], output_filename_extra=ARGS["output"]
+    )
