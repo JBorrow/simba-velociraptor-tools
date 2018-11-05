@@ -90,3 +90,45 @@ def write_data(filename: str, old_position: dict, new_position: dict) -> None:
         yaml.dump(combined, f)
 
     return
+
+
+def combine_arrays(id_array_list: list) -> Tuple[np.ndarray, list]:
+    """
+    Combines the arrays in id_array_list into one long array and returns
+    the long array along with the indicies at which things were concatenated
+    together.
+    """
+
+    insertion_points = [0]
+
+    for index, array in enumerate(id_array_list):
+        insertion_points.append(insertion_points[index] + array.shape[0])
+
+    out_array = np.concatenate(id_array_list)
+
+    return out_array, insertion_points
+
+
+def split_arrays(id_array: np.array, insertion_points: list) -> list:
+    """
+    Splits the array that was combined previously by combine_arrays.
+    """
+
+    slices = [[x, y] for x, y in zip(insertion_points[:-1], insertion_points[1:])]
+
+    id_array_list = []
+
+    for slice in slices:
+        id_array_list.append(id_array[slice[0] : slice[1]])
+
+    return id_array_list
+
+
+def load_hdf5_replace_and_dump(filename: str, output_filename_extra="duplicated"):
+    """
+    Reads the IDs from the HDF5 file at filename, concatenates all of the particle
+    types into one array, finds duplicates, fixes them, saves the duplicates file,
+    and writes to the original HDF5 file.
+    """
+
+    return

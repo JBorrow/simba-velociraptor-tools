@@ -115,3 +115,18 @@ def test_write_data_0():
     expected_data = {"old_positions": oldpos, "new_positions": newpos}
 
     assert expected_data == data
+
+
+def test_combine_and_split_0():
+    """
+    Tests the combine_array and split_array functions.
+    """
+
+    data_in = [np.arange(100), np.arange(10), np.zeros(1000)]
+
+    data_out = split_arrays(*combine_arrays(data_in))
+
+    for d_in, d_out in zip(data_in, data_out):
+        assert (d_in == d_out).all()
+
+    return
