@@ -3,6 +3,7 @@ Tests the functions in preprocess.py
 """
 
 from preprocess import *
+import os
 
 
 def test_find_non_unique_ids_0():
@@ -92,3 +93,25 @@ def test_find_and_replace_0():
     assert expected_newpos == newpos
 
     return
+
+
+def test_write_data_0():
+    """
+    Tests the writing of the data.
+    """
+
+    newpos = {4: 7, 5: 8, 6: 9}
+    oldpos = {4: 1, 5: 2, 6: 3}
+
+    write_data("test.yml", oldpos, newpos)
+
+    # Let's load it back in
+    with open("test.yml", "r") as f:
+        data = yaml.load(f)
+
+    # Delete our friendly neighbourhood test file
+    os.remove("test.yml")
+
+    expected_data = {"old_positions": oldpos, "new_positions": newpos}
+
+    assert expected_data == data

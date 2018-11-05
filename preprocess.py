@@ -5,6 +5,7 @@ For usage information, use python3 preprocess.py -h
 """
 
 import h5py
+import yaml
 import numpy as np
 
 from typing import Tuple
@@ -75,3 +76,17 @@ def find_and_replace_non_unique_ids(ids: np.array) -> Tuple[np.array, dict]:
     new_position_dict = {k: v for k, v in zip(duplicate_positions, replacement_ids)}
 
     return new_ids, old_position_dict, new_position_dict
+
+
+def write_data(filename: str, old_position: dict, new_position: dict) -> None:
+    """
+    Serialises the data from the output from find_and_replace_non_unique_ids
+    to file, using yaml.
+    """
+
+    combined = {"old_positions": old_position, "new_positions": new_position}
+
+    with open(filename, "w") as f:
+        yaml.dump(combined, f)
+
+    return
