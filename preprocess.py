@@ -124,6 +124,42 @@ def split_arrays(id_array: np.array, insertion_points: list) -> list:
     return id_array_list
 
 
+def grab_all_id_arrays(filename: str) -> Tuple[list]:
+    """
+    Opens the HDF5 file at filename and reads the IDs from the file. Also returns
+    the particle classes (e.g. 0 for PartType0) that exist in the file.
+    """
+
+    exists = []
+    ids = []
+
+    with h5py.File(filename, "r") as file:
+        for particle_type in range(6):
+            try:
+                ids.append(file[f"/PartType{particle_type}/ParticleIDs"][...])
+                exists.append(particle_type)
+            except KeyError:
+                # Doesn't exist in the file, move on
+                pass
+
+    return ids, exists
+
+
+def write_all_id_arrays(
+    filename: str, new_id_array_list: list, particle_types: list
+) -> None:
+    """
+    Writes all particle type ID arrays that exist (given in particle types) to file
+    from the new_id_array_list.
+    """
+
+    with h5py.File(filename, "r") as file:
+        for ids, ptype in zip(new_id_array_list, particle_types):
+            file[f"/PartType{ptype}/ParticleIDs"][...] = ids
+
+    return
+
+
 def load_hdf5_replace_and_dump(filename: str, output_filename_extra="duplicated"):
     """
     Reads the IDs from the HDF5 file at filename, concatenates all of the particle
@@ -131,4 +167,23 @@ def load_hdf5_replace_and_dump(filename: str, output_filename_extra="duplicated"
     and writes to the original HDF5 file.
     """
 
+    id_array_list, existing_particle_types = grab_all_id_arrays(filename)
+    id_array, insertion_points = combine_arrays(id_array_list)
+
+    new_id_array, old_position_dict, new_position_dict = find_and_replace_non_unique_ids(
+        id_array
+    )
+
+    new_id_array_list = split_arrays(new_id_array, insertion_points)
+
+    duplicated_filename = f"{filename[:-5]}_{output_filename_extra}.yml"
+    write_data(duplicated_filename, old_position_dict, new_position_dict)
+
+    write_all_id_arrays(filename, new_id_array_list, existing_particle_types)
+
     return
+
+
+if __name__ == "__main__":
+    # Run in script mode!
+    import argparse as ap
