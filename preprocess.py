@@ -155,7 +155,7 @@ def write_all_id_arrays(
 
     with h5py.File(filename, "a") as file:
         for ids, ptype in zip(new_id_array_list, particle_types):
-            file[f"/PartType{ptype}/ParticleIDs"] = ids
+            file[f"/PartType{ptype}/ParticleIDs"][...] = ids
 
     return
 
