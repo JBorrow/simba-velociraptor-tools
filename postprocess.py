@@ -100,49 +100,22 @@ def create_positions_groups_correspondance(
     position in the HDF5 file. 
     """
 
-    args_velociraptor = particle_ids_velociraptor.argsort()
-    
-    sorted_group_array_velociraptor = group_array_velociraptor[args_velociraptor]
-    sorted_particle_ids_velociraptor = particle_ids_velociraptor[args_velociraptor]
-
     groups_snapshot = {}
 
-    for ptype in particle_ids_snapshot.keys():
-        # Here be dragons...
-
-        particle_ids = particle_ids_snapshot[ptype]
-
-        args = particle_ids.argsort()
-
-        sorted_particle_ids = particle_ids[args]
-
-        indicies_of_positions_ptype_velociraptor = np.isin(
-            sorted_particle_ids_velociraptor,
-            sorted_particle_ids,
-            assume_unique=True
+    for ptype, particle_ids in particle_ids_snapshot.items():
+        _, indices_v, indices_p = np.intersect1d(
+            particle_ids_velociraptor,
+            particle_ids,
+            assume_unique=True,
+            return_indices=True
         )
 
-        groups_of_ptype = sorted_group_array_velociraptor[
-            indicies_of_positions_ptype_velociraptor
-        ]
+        groups_in_order = np.empty(particle_ids.shape, dtype=int)
+        # Particles outside of groups have -1 as a groupid
+        groups_in_order[...] = -1
 
-        indicies_of_positions_ptype_particles = np.isin(
-            sorted_particle_ids,
-            sorted_particle_ids_velociraptor,
-            assume_unique=True
-        )
+        groups_in_order[indices_p] = group_array_velociraptor[indices_v]
 
-        groups_unordered = np.empty_like(sorted_particle_ids)
-        # -1 corresponds to ungrouped
-        groups_unordered[...] = -1
-        groups_unordered[indicies_of_positions_ptype_particles] = groups_of_ptype
-
-        # Now we need to un-sort the array, allocate the holding bay.
-        groups_ordered_same_as_snapshot = np.empty_like(sorted_particle_ids)
-
-        # Un-sort the array.
-        groups_ordered_same_as_snapshot[args] = groups_unordered
-
-        groups_snapshot[ptype] = groups_ordered_same_as_snapshot
+        groups_snapshot[ptype] = groups_in_order
 
     return groups_snapshot
