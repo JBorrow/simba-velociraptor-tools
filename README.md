@@ -9,3 +9,8 @@ for our use-caase, as SIMBA no longer has unique IDs. This toolkit contains thre
 + `run_velociraptor.sh`, which runs VELOCIRaptor on the dataset
 + `postprocess.py`, which fixes the SIMBA HDF5 dataset back up to it's original status, and produces
   two new halo catalogue files which are described below.
+
+### Requirements
+
+These scripts have the requirements as stated in the `requirements.txt`. You can install them by running
+`pip install -r requirements.txt`. To run the automated test suite, you'll also need `pytest`.
