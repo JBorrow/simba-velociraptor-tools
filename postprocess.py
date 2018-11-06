@@ -218,6 +218,6 @@ if __name__ == "__main__":
         ARGS["output"] = f"halo/{ARGS['input']}"
 
     load_data_and_write_new_catalog(
-        snapshot_filename=ARGS["input"],
+        snapshot_filename=f"{ARGS['input']}.hdf5",
         catalogue_path=ARGS["output"]
     )
