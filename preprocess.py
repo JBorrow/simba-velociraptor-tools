@@ -101,9 +101,9 @@ def load_hdf5_replace_and_dump(filename: str, output_filename_extra="duplicated"
     and writes to the original HDF5 file.
     """
 
-    existing_particle_types, id_array_list = read_particle_ids_from_file(
+    existing_particle_types, id_array_list = zip(*read_particle_ids_from_file(
         f"{filename}.hdf5"
-    ).items()
+    ).items())
     id_array, insertion_points = combine_arrays(id_array_list)
 
     new_id_array, old_position_dict, new_position_dict = find_and_replace_non_unique_ids(
