@@ -94,21 +94,6 @@ def write_data(filename: str, old_position: dict, new_position: dict) -> None:
     return
 
 
-def write_all_id_arrays(
-    filename: str, new_id_array_list: list, particle_types: list
-) -> None:
-    """
-    Writes all particle type ID arrays that exist (given in particle types) to file
-    from the new_id_array_list.
-    """
-
-    with h5py.File(filename, "a") as file:
-        for ids, ptype in zip(new_id_array_list, particle_types):
-            file[f"/PartType{ptype}/ParticleIDs"][...] = ids
-
-    return
-
-
 def load_hdf5_replace_and_dump(filename: str, output_filename_extra="duplicated"):
     """
     Reads the IDs from the HDF5 file at filename, concatenates all of the particle

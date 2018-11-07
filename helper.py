@@ -4,6 +4,7 @@ of particle ID arrays.
 """
 
 import numpy as np
+import h5py
 
 from typing import Tuple
 
@@ -61,3 +62,18 @@ def read_particle_ids_from_file(filename: str) -> Tuple[dict]:
                 pass
 
     return particle_ids
+
+
+def write_all_id_arrays(
+    filename: str, new_id_array_list: list, particle_types: list
+) -> None:
+    """
+    Writes all particle type ID arrays that exist (given in particle types) to file
+    from the new_id_array_list.
+    """
+
+    with h5py.File(filename, "a") as file:
+        for ids, ptype in zip(new_id_array_list, particle_types):
+            file[f"/PartType{ptype}/ParticleIDs"][...] = ids
+
+    return
