@@ -102,7 +102,7 @@ def load_hdf5_replace_and_dump(filename: str, output_filename_extra="duplicated"
     """
 
     existing_particle_types, id_array_list = read_particle_ids_from_file(
-        filename
+        f"{filename}.hdf5"
     ).items()
     id_array, insertion_points = combine_arrays(id_array_list)
 
@@ -112,7 +112,7 @@ def load_hdf5_replace_and_dump(filename: str, output_filename_extra="duplicated"
 
     new_id_array_list = split_arrays(new_id_array, insertion_points)
 
-    duplicated_filename = f"{filename[:-5]}_{output_filename_extra}.yml"
+    duplicated_filename = f"{filename}_{output_filename_extra}.yml"
     write_data(duplicated_filename, old_position_dict, new_position_dict)
 
     write_all_id_arrays(filename, new_id_array_list, existing_particle_types)
@@ -137,7 +137,7 @@ if __name__ == "__main__":
         "-i",
         "--input",
         help="""
-        Input HDF5 file to preprocess.
+        Input HDF5 file to preprocess, without the file extension.
         """,
         required=True,
     )
@@ -146,7 +146,7 @@ if __name__ == "__main__":
         "-o",
         "--output",
         help="""
-        Extra string to add onto the output filename for the diffs.
+        Extra string to add onto the output filename for the diffs. Default: duplicated
         """,
         required=False,
         default="duplicated",
