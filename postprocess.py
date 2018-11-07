@@ -12,6 +12,8 @@ import h5py
 
 from typing import Tuple
 
+from helper import *
+
 
 class InputError(Exception):
     """Exception raised for errors in the input.
@@ -218,6 +220,5 @@ if __name__ == "__main__":
         ARGS["output"] = f"halo/{ARGS['input']}"
 
     load_data_and_write_new_catalog(
-        snapshot_filename=f"{ARGS['input']}.hdf5",
-        catalogue_path=ARGS["output"]
+        snapshot_filename=f"{ARGS['input']}.hdf5", catalogue_path=ARGS["output"]
     )
