@@ -2,9 +2,6 @@
 Postprocess the SIMBA and VELOCIraptor outputs into new files that describe
 the particles contained in each halo by _position in the file_ rather than
 particle ID.
-
-This script also fixes-up the SIMBA output file to ensure that it has the
-original IDs (i.e. the ones that may be duplicated).
 """
 
 import numpy as np
@@ -152,9 +149,6 @@ if __name__ == "__main__":
         alongside the halo finder data that describes the groups that each
         particle is in _in the same order as the particles in the file_.
         This makes a lot of things much easier.
-
-        It also (TBD) fixes up the original file to make the IDs non-unique
-        again.
         """
     )
 
