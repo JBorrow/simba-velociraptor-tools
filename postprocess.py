@@ -72,37 +72,6 @@ def create_group_array(group_sizes: np.array) -> np.array:
     return groups
 
 
-def read_particle_ids_from_file(filename: str) -> Tuple[dict]:
-    """
-    Reads the particle IDs from file. Stores them in a dictionary
-    with the particle type corresponding to the index, i.e.
-
-    {
-        0: <pids for PartType0,
-        ...
-    }
-
-    Also returns a similar dictionary that gives the _position_ in the
-    file for those particles.
-    """
-
-    particle_ids = {}
-
-    with h5py.File(filename, "r") as handle:
-        for ptype in range(6):
-            try:
-                particle_ids[ptype] = handle[f"/PartType{ptype}/ParticleIDs"][...]
-            except KeyError:
-                pass
-
-    positions = {}
-
-    for ptype, ids in particle_ids.items():
-        positions[ptype] = np.arange(len(ids.shape))
-
-    return particle_ids, positions
-
-
 def create_positions_groups_correspondance(
     particle_ids_velociraptor: np.array,
     group_array_velociraptor: np.array,
@@ -160,7 +129,7 @@ def load_data_and_write_new_catalog(
     )
     group_array = create_group_array(velociraptor_group_sizes)
 
-    particle_ids, _ = read_particle_ids_from_file(snapshot_filename)
+    particle_ids = read_particle_ids_from_file(snapshot_filename)
 
     groups_snapshot = create_positions_groups_correspondance(
         velociraptor_particle_ids, group_array, particle_ids

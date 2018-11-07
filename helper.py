@@ -38,3 +38,26 @@ def split_arrays(id_array: np.array, insertion_points: list) -> list:
         id_array_list.append(id_array[slice[0] : slice[1]])
 
     return id_array_list
+
+
+def read_particle_ids_from_file(filename: str) -> Tuple[dict]:
+    """
+    Reads the particle IDs from file. Stores them in a dictionary
+    with the particle type corresponding to the index, i.e.
+
+    {
+        0: <pids for PartType0,
+        ...
+    }
+    """
+
+    particle_ids = {}
+
+    with h5py.File(filename, "r") as handle:
+        for ptype in range(6):
+            try:
+                particle_ids[ptype] = handle[f"/PartType{ptype}/ParticleIDs"][...]
+            except KeyError:
+                pass
+
+    return particle_ids

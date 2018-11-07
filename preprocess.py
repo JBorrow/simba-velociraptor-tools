@@ -94,27 +94,6 @@ def write_data(filename: str, old_position: dict, new_position: dict) -> None:
     return
 
 
-def grab_all_id_arrays(filename: str) -> Tuple[list]:
-    """
-    Opens the HDF5 file at filename and reads the IDs from the file. Also returns
-    the particle classes (e.g. 0 for PartType0) that exist in the file.
-    """
-
-    exists = []
-    ids = []
-
-    with h5py.File(filename, "r") as file:
-        for particle_type in range(6):
-            try:
-                ids.append(file[f"/PartType{particle_type}/ParticleIDs"][...])
-                exists.append(particle_type)
-            except KeyError:
-                # Doesn't exist in the file, move on
-                pass
-
-    return ids, exists
-
-
 def write_all_id_arrays(
     filename: str, new_id_array_list: list, particle_types: list
 ) -> None:
@@ -137,7 +116,9 @@ def load_hdf5_replace_and_dump(filename: str, output_filename_extra="duplicated"
     and writes to the original HDF5 file.
     """
 
-    id_array_list, existing_particle_types = grab_all_id_arrays(filename)
+    existing_particle_types, id_array_list = read_particle_ids_from_file(
+        filename
+    ).items()
     id_array, insertion_points = combine_arrays(id_array_list)
 
     new_id_array, old_position_dict, new_position_dict = find_and_replace_non_unique_ids(
