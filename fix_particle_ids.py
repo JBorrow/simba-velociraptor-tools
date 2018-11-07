@@ -48,9 +48,9 @@ def open_fix_and_write(snapshot: str, replaced: str):
     snapshot back to how it originally was.
     """
 
-    existing_particle_types, original_id_list = read_particle_ids_from_file(
+    existing_particle_types, original_id_list = zip(*read_particle_ids_from_file(
         snapshot
-    ).items()
+    ).items())
 
     old_positions, _ = read_yaml_file(replaced)
 
