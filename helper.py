@@ -41,7 +41,7 @@ def split_arrays(id_array: np.array, insertion_points: list) -> list:
     return id_array_list
 
 
-def read_particle_ids_from_file(filename: str) -> Tuple[dict]:
+def read_particle_ids_from_file(filename: str) -> dict:
     """
     Reads the particle IDs from file. Stores them in a dictionary
     with the particle type corresponding to the index, i.e.
