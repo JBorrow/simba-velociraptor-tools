@@ -34,9 +34,16 @@ def recreate_old_array(ids: np.array, old_positions: dict) -> np.array:
     Recreates the old array by performing essentially a find and replace.
     """
 
-    ids[np.array(list(old_positions.keys()))] = np.array(list(old_positions.values()))
+    indices = np.array(list(old_positions.keys()))
+    values = np.array(list(old_positions.values()))
 
-    return ids
+    if indices.size == 0:
+        print("We don't need to fix anything; you never had any duplicated IDs in the first place!")
+        exit(0)
+    else:
+        ids[indices] = values
+
+        return ids
 
 
 def open_fix_and_write(snapshot: str, replaced: str):
