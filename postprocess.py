@@ -43,7 +43,7 @@ def load_velociraptor_data(filename: str) -> np.array:
     # Does not include the LAST one
     group_sizes = [x - y for x, y in zip(offsets[1:], offsets[:-1])]
     group_sizes += [particle_ids.size - offsets[-1]]
-    group_sizes = np.array(group_sizes)
+    group_sizes = np.array(group_sizes, dtype=int)
 
     return particle_ids, group_sizes
 
