@@ -30,14 +30,20 @@ def load_velociraptor_data(filename: str) -> np.array:
     Give filename the path without the .<> file, as we need multiple.
 
     Returns the ID array of particle IDs, and the "group size" array for
-    each group.
+    each group. We cannot use the GroupSize as that includes the unbound
+    particles. We'll ignore those particles.
     """
 
     with h5py.File(f"{filename}.catalog_particles", "r") as handle:
         particle_ids = handle["Particle_IDs"][...]
 
     with h5py.File(f"{filename}.catalog_groups", "r") as handle:
-        group_sizes = handle["Group_Size"][...]
+        offsets = handle["Offset"][...]
+
+    # Does not include the LAST one
+    group_sizes = [x - y for x, y in zip(offsets[1:], offsets[:-1])]
+    group_sizes += [particle_ids.size - offsets[-1]]
+    group_sizes = np.array(group_sizes)
 
     return particle_ids, group_sizes
 
