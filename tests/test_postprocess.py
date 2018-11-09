@@ -41,9 +41,14 @@ def test_create_positions_roups_correspondance_0():
         1: np.array([1, 0, 7, -1, 4, 1]),
     }
 
-    group_array = create_positions_groups_correspondance(
-        particle_ids_velociraptor, group_array_velociraptor, particle_ids_snapshot
+    groups_snapshot = initialise_groups_dictionary(particle_ids_snapshot)
+
+    groups_snapshot = create_positions_groups_correspondance(
+        particle_ids_velociraptor,
+        group_array_velociraptor,
+        particle_ids_snapshot,
+        groups_snapshot,
     )
 
-    for g, e_g in zip(group_array.values(), expected_group_array.values()):
+    for g, e_g in zip(groups_snapshot.values(), expected_group_array.values()):
         assert (g == e_g).all()
