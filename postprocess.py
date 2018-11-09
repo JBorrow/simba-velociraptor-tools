@@ -241,7 +241,7 @@ if __name__ == "__main__":
     )
 
     PARSER.add_argument(
-        "-u",
+        "-b",
         "--unbound",
         help="""
         Include unbound particles? Give this 0 if you wish to not have unbound particles
