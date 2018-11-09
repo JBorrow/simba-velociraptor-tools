@@ -249,7 +249,7 @@ if __name__ == "__main__":
         """,
         required=False,
         type=bool,
-        default=False,
+        default=True,
     )
 
     ARGS = vars(PARSER.parse_args())
