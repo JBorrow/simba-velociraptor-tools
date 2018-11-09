@@ -38,7 +38,9 @@ def recreate_old_array(ids: np.array, old_positions: dict) -> np.array:
     values = np.array(list(old_positions.values()))
 
     if indices.size == 0:
-        print("We don't need to fix anything; you never had any duplicated IDs in the first place!")
+        print(
+            "We don't need to fix anything; you never had any duplicated IDs in the first place!"
+        )
         exit(0)
     else:
         ids[indices] = values
