@@ -118,6 +118,15 @@ if __name__ == "__main__":
     )
 
     PARSER.add_argument(
+        "-d",
+        "--directory",
+        help="""
+        Directory that the snapshots and halos should live in. Required.
+        """,
+        required=True,
+    )
+
+    PARSER.add_argument(
         "-t",
         "--threads",
         help="""
@@ -157,9 +166,9 @@ if __name__ == "__main__":
     create_directory_if_not_exists(directory)
 
     runtime_options = dict(
-        snapshot_filename=ARGS["input"],
+        snapshot_filename=f"{ARGS['directory']}/{ARGS['input']}",
         velociraptor_path=ARGS["velociraptor"],
-        output_path=ARGS["output"],
+        output_path=f"{ARGS['directory']}/{ARGS['output']}",
         omp_num_threads=int(ARGS["threads"]),
         velociraptor_options_file_path=ARGS["config"],
     )

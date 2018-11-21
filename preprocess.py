@@ -143,6 +143,15 @@ if __name__ == "__main__":
     )
 
     PARSER.add_argument(
+        "-d",
+        "--directory",
+        help="""
+        Directory that the snapshots and halos should live in. Required.
+        """,
+        required=True,
+    )
+
+    PARSER.add_argument(
         "-o",
         "--output",
         help="""
@@ -155,5 +164,5 @@ if __name__ == "__main__":
     ARGS = vars(PARSER.parse_args())
 
     load_hdf5_replace_and_dump(
-        filename=ARGS["input"], output_filename_extra=ARGS["output"]
+        filename=f"{ARGS['directory']}/{ARGS['input']}", output_filename_extra=ARGS["output"]
     )

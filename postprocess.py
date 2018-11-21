@@ -241,6 +241,15 @@ if __name__ == "__main__":
     )
 
     PARSER.add_argument(
+        "-d",
+        "--directory",
+        help="""
+        Directory that the snapshots and halos should live in. Required.
+        """,
+        required=True,
+    )
+
+    PARSER.add_argument(
         "-b",
         "--unbound",
         help="""
@@ -265,6 +274,6 @@ if __name__ == "__main__":
 
     load_data_and_write_new_catalog(
         snapshot_filename=f"{ARGS['input']}.hdf5",
-        catalogue_path=ARGS["output"],
+        catalogue_path=f"{ARGS['directory']}/{ARGS['output']}",
         include_unbound=ARGS["unbound"],
     )

@@ -95,6 +95,15 @@ if __name__ == "__main__":
     )
 
     PARSER.add_argument(
+        "-d",
+        "--directory",
+        help="""
+        Directory that the snapshots and halos should live in. Required.
+        """,
+        required=True,
+    )
+
+    PARSER.add_argument(
         "-o",
         "--output",
         help="""
@@ -106,7 +115,7 @@ if __name__ == "__main__":
 
     ARGS = vars(PARSER.parse_args())
 
-    filename = f"{ARGS['input']}.hdf5"
-    duplicated_filename = f"{ARGS['input']}_{ARGS['output']}.yml"
+    filename = f"{ARGS['directory']}/{ARGS['input']}.hdf5"
+    duplicated_filename = f"{ARGS['directory']}/{ARGS['input']}_{ARGS['output']}.yml"
 
     open_fix_and_write(filename, duplicated_filename)
