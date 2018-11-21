@@ -163,7 +163,7 @@ def write_ordered_groups_to_file(filename: str, groups_snapshot: dict):
     with h5py.File(filename, "w") as handle:
         for ptype, particle_groups in groups_snapshot.items():
             current_group = handle.create_group(f"PartType{ptype}")
-            current_group.create_dataset(f"GroupID", data=particle_groups)
+            current_group.create_dataset(f"GroupID", data=particle_groups, compression="gzip")
 
     return
 
