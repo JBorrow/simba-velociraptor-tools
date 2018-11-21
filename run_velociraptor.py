@@ -163,7 +163,7 @@ if __name__ == "__main__":
 
     # Create the halo directory if required.
     filename, directory = parse_output_path(ARGS["output"])
-    create_directory_if_not_exists(directory)
+    create_directory_if_not_exists(f"{ARGS['directory']}/{directory}")
 
     runtime_options = dict(
         snapshot_filename=f"{ARGS['directory']}/{ARGS['input']}",
