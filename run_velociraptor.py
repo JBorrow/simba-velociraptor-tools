@@ -104,7 +104,7 @@ if __name__ == "__main__":
         help="""
         The prepended path to your velociraptor output. For example, if you
         give ./halo/output, you will get a bunch of files like ./halo/output.particles,
-        .catalogue... etc. Default is ./halo/<snapshot_filename_without_.hdf5>.
+        .catalogue... etc. Default is ./{-c}/<snapshot_filename_without_.hdf5>.
         """,
         required=False,
         default="DEFAULT",
@@ -148,6 +148,18 @@ if __name__ == "__main__":
         default="velociraptor.cfg",
     )
 
+    PARSER.add_argument(
+        "-c",
+        "--catalogue",
+        help="""
+        Name of the catalogue (i.e. the directory that it exists in). Defaults
+        to 'halo'.
+        """,
+        required=False,
+        default="halo"
+    )
+
+
     ARGS = vars(PARSER.parse_args())
 
     # Quick check to see if they have accidentally included the HDF5
@@ -159,7 +171,7 @@ if __name__ == "__main__":
 
     if ARGS["output"] == "DEFAULT":
         # Set to the actual default option.
-        ARGS["output"] = f"halo/{ARGS['input']}"
+        ARGS["output"] = f"{ARGS['catalogue']}/{ARGS['input']}"
 
     # Create the halo directory if required.
     filename, directory = parse_output_path(ARGS["output"])
