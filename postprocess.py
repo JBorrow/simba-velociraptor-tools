@@ -285,7 +285,7 @@ if __name__ == "__main__":
         ARGS["output"] = f"{ARGS['catalogue']}/{ARGS['input']}"
 
     load_data_and_write_new_catalog(
-        snapshot_filename=f"{ARGS['input']}.hdf5",
+        snapshot_filename=f"{ARGS['directory']}/{ARGS['input']}.hdf5",
         catalogue_path=f"{ARGS['directory']}/{ARGS['output']}",
         include_unbound=ARGS["unbound"],
     )
