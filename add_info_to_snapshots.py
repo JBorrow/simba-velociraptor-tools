@@ -44,7 +44,7 @@ def read_and_write_all(catalog_filename, snapshot_filename, name: str):
     with h5py.File(snapshot_filename, "r") as file:
         particle_numbers = file["Header"].attrs["NumPart_Total"]
 
-    for particle_type, number in zip([0, 1, 4, 5]):
+    for particle_type, number in zip([0, 1, 4, 5], particle_numbers):
         if not number:
             # If there are none of that particle then skip it
             continue
