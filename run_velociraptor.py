@@ -82,7 +82,7 @@ if __name__ == "__main__":
     PARSER = ap.ArgumentParser(
         description="""
         A very thin wrapper around VELOCIraptor in python. Used for scripting.
-        You will need to have pre-compiled velociraptor, and found the stf-gas
+        You will need to have pre-compiled velociraptor, and found the stf
         binary. You should compile VELOCIraptor without MPI, but with OMP
         support.
         """
@@ -92,10 +92,10 @@ if __name__ == "__main__":
         "-v",
         "--velociraptor",
         help="""
-        The path to the velociraptor stf-gas binary. Defaults to "./stf-gas".
+        The path to the velociraptor stf binary. Defaults to "./stf".
         """,
         required=False,
-        default="./stf-gas",
+        default="./stf",
     )
 
     PARSER.add_argument(
