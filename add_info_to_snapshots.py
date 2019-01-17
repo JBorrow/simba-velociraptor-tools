@@ -51,7 +51,7 @@ def read_and_write_all(catalog_filename, snapshot_filename, name: str):
 
         ids = read_from_hdf_file(catalog_filename, f"PartType{particle_type}/GroupID")
 
-        write_to_hdf_file(snapshot_filename, f"PartType{particle_type}/{name}")
+        write_to_hdf_file(snapshot_filename, f"PartType{particle_type}/{name}", ids)
         
     return
 
