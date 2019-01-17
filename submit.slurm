@@ -43,3 +43,8 @@ python3 -u $velociraptortoolsdir/postprocess.py \
         -c galaxy
 
 python3 -u $velociraptortoolsdir/fix_particle_ids.py -i $snapname -d $dirname
+
+python3 -u $velociraptortoolsdir/add_info_to_snapshots.py \
+	-s $dirname/$snapname
+	-v $dirname/halo/$snapname.ordered_group_particles
+	-g $dirname/galaxy/$snapname.ordered_group_particles
