@@ -28,7 +28,11 @@ def write_to_hdf_file(filename: str, handle: str, data):
     """
 
     with h5py.File(filename) as file:
-        file.create_dataset(handle, data=data)
+        try:
+            file.create_dataset(handle, data=data)
+        except RuntimeError:
+            # It already exists!
+            file[handle][...] = data
 
     return
 
@@ -44,8 +48,8 @@ def read_and_write_all(catalog_filename, snapshot_filename, name: str):
     with h5py.File(snapshot_filename, "r") as file:
         particle_numbers = file["Header"].attrs["NumPart_Total"]
 
-    for particle_type, number in zip([0, 1, 4, 5], particle_numbers):
-        if not number:
+    for particle_type in [0, 1, 4, 5]:
+        if not particle_numbers[particle_type]:
             # If there are none of that particle then skip it
             continue
 
